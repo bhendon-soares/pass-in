@@ -2,6 +2,7 @@ package bhendonsoares.com.passin.services;
 
 import bhendonsoares.com.passin.domain.attendee.Attendee;
 import bhendonsoares.com.passin.domain.event.Event;
+import bhendonsoares.com.passin.domain.event.exceptions.EventNotFoundException;
 import bhendonsoares.com.passin.dto.event.EventIdDTO;
 import bhendonsoares.com.passin.dto.event.EventRequestDTO;
 import bhendonsoares.com.passin.dto.event.EventResponseDTO;
@@ -20,7 +21,7 @@ public class EventService {
     private final AttendeeRepository attendeeRepository;
 
     public EventResponseDTO getEventDetail(String eventId) {
-        Event event = this.eventRepository.findById(eventId).orElseThrow(() -> new RuntimeException("Event not found with ID: " + eventId));
+        Event event = this.eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException("Event not found with ID: " + eventId));
         List<Attendee> attendeeList = this.attendeeRepository.findByEventId(eventId);
         return new EventResponseDTO(event, attendeeList.size());
     }

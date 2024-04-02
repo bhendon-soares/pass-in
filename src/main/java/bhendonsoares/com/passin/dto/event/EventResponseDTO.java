@@ -1,7 +1,9 @@
 package bhendonsoares.com.passin.dto.event;
 
 import bhendonsoares.com.passin.domain.event.Event;
+import lombok.Getter;
 
+@Getter
 public class EventResponseDTO {
     EventDetailDTO event;
 

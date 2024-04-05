@@ -1,6 +1,7 @@
 package bhendonsoares.com.passin.services;
 
 import bhendonsoares.com.passin.domain.attendee.Attendee;
+import bhendonsoares.com.passin.domain.attendee.exceptions.AttendeeAlreadyExistsException;
 import bhendonsoares.com.passin.domain.checkin.CheckIn;
 import bhendonsoares.com.passin.dto.attendee.AttendeeDetails;
 import bhendonsoares.com.passin.dto.attendee.AttendeesListResponseDTO;
@@ -33,5 +34,15 @@ public class AttendeeService {
         }).toList();
 
         return new AttendeesListResponseDTO(attendeeDetailsList);
+    }
+
+    public void verifyAttendeeSubscription(String email, String eventId){
+        Optional<Attendee> isAttendeeRegistered = this.attendeeRepository.findByEventIdAndEmail(eventId, email);
+        if(isAttendeeRegistered.isPresent()) throw new AttendeeAlreadyExistsException("Attendee is already register");
+    }
+
+    public Attendee registerAttendee(Attendee newAttendee){
+        this.attendeeRepository.save(newAttendee);
+        return newAttendee;
     }
 }
